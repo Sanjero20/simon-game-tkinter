@@ -1,4 +1,7 @@
+# SIMON Game (Short-Term Memory Skill Game)
+
 # Note this code does not have any error handling
+# Add GUI next
 
 import os
 import time
