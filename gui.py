@@ -5,15 +5,14 @@ def p_color(color):
     os.system("cls")
     print(color)
 
-
 def quit_game():
     quit()
 
 color_gray = "#2b2b34"
-color_green = "#8fca94"
-color_red = "#bb5450"
-color_blue = "#66a4ca"
-color_yellow = "#F9D923"
+color_green = "#18d770"
+color_red = "#fb4c31"
+color_blue = "#24a1e1"
+color_yellow = "#efd82a"
 
 
 window = Tk()
@@ -55,6 +54,7 @@ button_quit = Button(window, text="QUIT",
                         font=("Consolas", 15),
                         padx=30, pady=5,
                         command=quit_game)
+
 button_quit.place(relx =.5, rely=.85, anchor=CENTER)
 
 window.mainloop()
