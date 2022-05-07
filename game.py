@@ -1,7 +1,6 @@
 # SIMON Game (Short-Term Memory Skill Game)
-
+# Foundation Code
 # Note this code does not have any error handling
-# Add GUI and fix some stuff
 
 import os
 import time
