@@ -6,10 +6,10 @@ import pygame
 #Color codes
 BACKGROUND = "#2b2b34"
 
-GREEN = ("#18d770", "sound1_green.mp3", 'G')
-RED = ("#fb4c31", "sound4_red.mp3", 'R')
-BLUE = ("#24a1e1", "sound3_blue.mp3", 'B')
-YELLOW = ("#efd82a", "sound2_yellow.mp3", 'Y')
+GREEN = ("#18d770", "sound1_green.mp3")
+RED = ("#fb4c31", "sound4_red.mp3")
+BLUE = ("#24a1e1", "sound3_blue.mp3")
+YELLOW = ("#efd82a", "sound2_yellow.mp3")
 
 myfont = ("Consolas", 15)
 
@@ -18,23 +18,17 @@ pygame.mixer.init()
 
 class Color_Button:
     """A Class that creates a button widget"""
-    def __init__(self, color, sound, color_code):        
+    def __init__(self, color, sound):        
         self.color = color
         self.sound = sound
-        self.code = color_code
 
     def place_Button(self, frame, row, column):
         self.button = Button(frame, bg=self.color,
                                 padx=50, pady=40,
-                                command=self.play_sound, 
-                                )
+                                command=self.play_sound)
         self.button.grid(row=row, column=column)
 
-    def get_color_code(self):
-        print(self.code)
-
     def play_sound(self):
-        """Play a sound when clicked"""
         pygame.mixer.music.load(f"audio\\{self.sound}")
         pygame.mixer.music.play()
         #Clear Terminal 
@@ -42,10 +36,6 @@ class Color_Button:
 
 class Simon:
     def __init__(self):
-        self.store = []
-        self.play()
-
-    def play(self):
         self.init_Window()
         self.main_menu()
         self.window.mainloop()
@@ -63,10 +53,10 @@ class Simon:
         
     def init_Buttons(self):
         """Initialize Buttons"""
-        self.Button_GREEN = Color_Button(GREEN[0], GREEN[1], GREEN[2])
-        self.Button_RED = Color_Button(RED[0], RED[1], RED[2])
-        self.Button_BLUE = Color_Button(BLUE[0], BLUE[1], BLUE[2])
-        self.Button_YELLOW = Color_Button(YELLOW[0], YELLOW[1], YELLOW[2])
+        self.Button_GREEN = Color_Button(GREEN[0], GREEN[1])
+        self.Button_RED = Color_Button(RED[0], RED[1])
+        self.Button_BLUE = Color_Button(BLUE[0], BLUE[1])
+        self.Button_YELLOW = Color_Button(YELLOW[0], YELLOW[1])
         #Place button in Frame in grid manner
         self.Button_GREEN.place_Button(self.frame_Game, 0, 0)
         self.Button_RED.place_Button(self.frame_Game, 0, 1)
@@ -90,7 +80,7 @@ class Simon:
         self.hide_widget(self.Button_MENU)
         self.hide_widget(self.frame_Combined)
         self.main_menu()
-          
+        
     def main_menu(self):
         self.show_widget(self.frame_Menu)
         self.button_START = Button(self.frame_Menu,
@@ -118,21 +108,4 @@ class Simon:
                                     )
         self.Button_MENU.pack(padx=0, pady=10, side=LEFT)
 
-
-        # ERror Duplicating self.score when returning to main menu
-        self.score = IntVar()
-
-        self.Label_rounds = Label(self.frame_Combined,
-                                    textvariable=self.score, font=myfont,
-                                    )
-        self.Label_rounds.pack(side=RIGHT)
-
-
-    def add_score(self):
-        #use : command=self.add_score
-
-        value = int(self.score.get())
-        self.score.set(value+1)
-
 simon = Simon()
-simon.play()
