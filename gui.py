@@ -3,36 +3,20 @@ import os
 from tkinter import *
 import pygame
 
+from button_class import Color_Button
+
 #Color codes
 BACKGROUND = "#2b2b34"
 
-GREEN = ("#18d770", "sound1_green.mp3")
-RED = ("#fb4c31", "sound4_red.mp3")
-BLUE = ("#24a1e1", "sound3_blue.mp3")
-YELLOW = ("#efd82a", "sound2_yellow.mp3")
+GREEN = ("#18d770", "beep_green.ogg")
+RED = ("#fb4c31", "beep_red.ogg")
+YELLOW = ("#efd82a", "beep_yellow.ogg")
+BLUE = ("#24a1e1", "beep_blue.ogg")
 
 myfont = ("Consolas", 15)
 
 #Initiate pymixer
 pygame.mixer.init()
-
-class Color_Button:
-    """A Class that creates a button widget"""
-    def __init__(self, color, sound):        
-        self.color = color
-        self.sound = sound
-
-    def place_Button(self, frame, row, column):
-        self.button = Button(frame, bg=self.color,
-                                padx=50, pady=40,
-                                command=self.play_sound)
-        self.button.grid(row=row, column=column)
-
-    def play_sound(self):
-        pygame.mixer.music.load(f"audio\\{self.sound}")
-        pygame.mixer.music.play()
-        #Clear Terminal 
-        os.system("CLS")
 
 class Simon:
     def __init__(self):
@@ -53,15 +37,22 @@ class Simon:
         
     def init_Buttons(self):
         """Initialize Buttons"""
-        self.Button_GREEN = Color_Button(GREEN[0], GREEN[1])
-        self.Button_RED = Color_Button(RED[0], RED[1])
-        self.Button_BLUE = Color_Button(BLUE[0], BLUE[1])
-        self.Button_YELLOW = Color_Button(YELLOW[0], YELLOW[1])
+        self.Button_GREEN = Color_Button()
+        self.Button_RED = Color_Button()
+        self.Button_YELLOW = Color_Button()
+        self.Button_BLUE = Color_Button()
+
+        # Set Button Color and Sounds
+        self.Button_GREEN.set_properties(GREEN[0], GREEN[1], "G")
+        self.Button_RED.set_properties(RED[0], RED[1], "R")
+        self.Button_YELLOW.set_properties(YELLOW[0], YELLOW[1], "Y")
+        self.Button_BLUE.set_properties(BLUE[0], BLUE[1], "B")
+
         #Place button in Frame in grid manner
         self.Button_GREEN.place_Button(self.frame_Game, 0, 0)
         self.Button_RED.place_Button(self.frame_Game, 0, 1)
-        self.Button_BLUE.place_Button(self.frame_Game, 1, 1)
         self.Button_YELLOW.place_Button(self.frame_Game, 1, 0)
+        self.Button_BLUE.place_Button(self.frame_Game, 1, 1)
 
     def show_widget(self, widget, x=0, y=0):
         """Show widget to the self.window"""
@@ -71,7 +62,7 @@ class Simon:
         """Hide Widget that uses the .pack() method"""
         widget.pack_forget()
 
-    def start(self):
+    def goto_gamemenu(self):
         """Destroy Main Menu proceed to Game"""
         self.hide_widget(self.frame_Menu)
         self.game_menu()
@@ -86,7 +77,7 @@ class Simon:
         self.button_START = Button(self.frame_Menu,
                                     text="START", font=myfont,
                                     padx=15, 
-                                    command=self.start
+                                    command=self.goto_gamemenu
                                     )
         self.button_QUIT = Button(self.frame_Menu,
                                     text="QUIT", font=myfont,
@@ -99,6 +90,9 @@ class Simon:
 
     def game_menu(self):
         """Show Game"""
+        self.playstate = Label(self.frame_Combined,
+                            text="WATCH", font=myfont)
+
         self.show_widget(self.frame_Combined, 0, 20)
         self.show_widget(self.frame_Game)
         self.init_Buttons()
