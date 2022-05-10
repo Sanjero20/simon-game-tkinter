@@ -1,4 +1,4 @@
-import os
+import os, random, time
 
 from tkinter import *
 import pygame
@@ -20,6 +20,10 @@ pygame.mixer.init()
 
 class Simon:
     def __init__(self):
+        # self.game_state = "watch"
+        self.choices = ['R', 'G', 'B', 'Y']
+        self.pattern = []
+
         self.init_Window()
         self.main_menu()
         self.window.mainloop()
@@ -54,18 +58,24 @@ class Simon:
         self.Button_YELLOW.place_Button(self.frame_Game, 1, 0)
         self.Button_BLUE.place_Button(self.frame_Game, 1, 1)
 
-    def show_widget(self, widget, x=0, y=0):
+        # From Game menu return to main menu
+        self.Button_MENU = Button(self.frame_Combined,
+                                    text="MENU", font=myfont,
+                                    command=self.play_pattern
+                                    )
+
+    def show_widget(self, widget, x=0, y=0, side=TOP):
         """Show widget to the self.window"""
-        widget.pack(padx=x, pady=y)
+        widget.pack(padx=x, pady=y, side=side)
 
     def hide_widget(self, widget):
         """Hide Widget that uses the .pack() method"""
         widget.pack_forget()
 
-    def goto_gamemenu(self):
+    def goto_gamebackground(self):
         """Destroy Main Menu proceed to Game"""
         self.hide_widget(self.frame_Menu)
-        self.game_menu()
+        self.game_background()
 
     def return_menu(self):
         self.hide_widget(self.Button_MENU)
@@ -77,7 +87,7 @@ class Simon:
         self.button_START = Button(self.frame_Menu,
                                     text="START", font=myfont,
                                     padx=15, 
-                                    command=self.goto_gamemenu
+                                    command=self.goto_gamebackground
                                     )
         self.button_QUIT = Button(self.frame_Menu,
                                     text="QUIT", font=myfont,
@@ -88,18 +98,41 @@ class Simon:
         self.button_START.place(relx=0.5, rely=0.41, anchor=CENTER)
         self.button_QUIT.place(relx=0.5, rely=0.56, anchor=CENTER)
 
-    def game_menu(self):
+    def game_background(self):
         """Show Game"""
-        self.playstate = Label(self.frame_Combined,
-                            text="WATCH", font=myfont)
-
         self.show_widget(self.frame_Combined, 0, 20)
         self.show_widget(self.frame_Game)
+
         self.init_Buttons()
-        self.Button_MENU = Button(self.frame_Combined,
-                                    text="MENU", font=myfont,
-                                    command=self.return_menu
-                                    )
-        self.Button_MENU.pack(padx=0, pady=10, side=LEFT)
+        self.show_widget(self.Button_MENU, 0, 10, side=LEFT)
+
+    def start_game(self):
+        pass
+        
+    def add_pattern(self):
+        """Add a random pattern into the list."""
+        self.pattern.append(random.choice(self.choices))
+
+    def play_pattern(self):
+        """Play the pattern thru demonstation"""
+        for i in self.choices:
+            if i == 'R':
+                self.Button_RED.flash()
+            elif i == 'G':
+                self.Button_GREEN.flash()
+            elif i == 'B':
+                self.Button_BLUE.flash()
+            elif i == 'Y':
+                self.Button_YELLOW.flash()
+
+            time.sleep(0.75)
+    
+    def game_status(self):
+        if game_state == "watch":
+            # Play pattern sequence
+            pass
+        else:
+            # Verify player turn sequence
+            pass
 
 simon = Simon()
