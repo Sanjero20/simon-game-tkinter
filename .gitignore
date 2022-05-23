@@ -1,0 +1,4 @@
+# Created by pytest automatically.
+.pytest_cache
+__pycache__
+highscore.txt
