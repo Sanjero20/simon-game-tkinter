@@ -1,6 +1,9 @@
 import os, random, time, pygame
 from tkinter import *
 
+from button_settings import ButtonSettings
+from score import ScoringSystem
+
 BACKGROUND = "#2b2b34"
 
 GREEN = ("#18d770", "beep_green.ogg")
@@ -10,11 +13,10 @@ BLUE = ("#24a1e1", "beep_blue.ogg")
 
 myfont = ("Consolas", 15)
 
-#Initiate pymixer
-pygame.mixer.init()
+class Game(ButtonSettings, ScoringSystem):
+    def __init__(self, mainframe, widget_frame):
+        super().__init__()
 
-class Game():
-    def __init__(self, mainframe, widget_frame):    
         self.window = mainframe
         self.frame_Game = widget_frame
         self.frame_Buttons = Frame(self.frame_Game, background=BACKGROUND)
@@ -31,6 +33,7 @@ class Game():
         self.highscore = IntVar()
         self.highscore_txt = StringVar()
         self.highscore_txt.set(f"Highscore: {self.highscore.get()}")
+
         self.score = IntVar()
         self.score_txt = StringVar()
         self.score_txt.set(f"Score: {self.score.get()}")
@@ -39,13 +42,11 @@ class Game():
         self.frame_Buttons.pack()
         self.frame_Game.place(relx=0.5, rely=0.5, anchor=CENTER)
 
-        # Game Things that i dont know what to do 
         self.listofButtons = [self.Button_GREEN,
                               self.Button_RED,
                               self.Button_YELLOW,
                               self.Button_BLUE,
                               ]
-
         self.gameover = False
 
     def init_Buttons(self):
@@ -88,10 +89,6 @@ class Game():
 
         self.Button_PLAY.place(relx=0.5,rely=0.5, anchor=CENTER)
 
-    def playSound(self, soundFile):
-        pygame.mixer.music.load(f"audio\\{soundFile}")
-        pygame.mixer.music.play()
-
     def buttonClicked(self, soundFile, color_code):
         """Will trigger if any of the 4 colored buttons is pressed"""
 
@@ -131,43 +128,6 @@ class Game():
                     self.adjustcolor(i, 'gray')
 
                 self.set_highscore()
-
-    def adjustButtons(self, button, relief=RAISED, state=NORMAL):
-        """Adjust the button state and relief"""
-        button['state'] = state
-        button['relief'] = relief
-
-    def adjustcolor(self, button, color):
-        """Adjust the color of the button"""
-        button['bg'] = color
-
-    def get_highscore(self):
-        """
-        Retrieve previous highscore from txt file, 
-        if not found, create a file and set highscore to zero
-        """
-        try:
-            file = open("highscore.txt")
-        except FileNotFoundError:
-            file = open("highscore.txt", "w")
-            file.write("0")
-        else:
-            highscore = file.read()
-            if highscore:
-                self.highscore.set(int(highscore))
-            file.close()
-
-        self.highscore_txt.set(f"Highscore: {self.highscore.get()}")
-
-    def set_highscore(self):
-        """Check if the score is higher than the highscore"""
-        if self.score.get() > self.highscore.get():
-            self.highscore.set(self.score.get())
-            self.highscore_txt.set(f"Highscore: {self.highscore.get()}")
-            self.window.update()
-
-        with open("highscore.txt", "w") as file:
-            file.write(str(self.highscore.get()))
 
     def display_gameState(self):
         """Shows the State of the game (watch / your turn)"""
@@ -211,24 +171,6 @@ class Game():
         self.label_state.update()
 
         self.waitingForInput = True
-
-    def disable_playButton(self, text, state=DISABLED):
-        """Changes the Play button to SIMON"""
-        self.Button_PLAY['state'] = state
-        self.Button_PLAY['text'] = text
-        self.Button_PLAY['background'] = 'black'
-        self.Button_PLAY['foreground'] = 'white'
-        self.Button_PLAY.update()
-
-    def add_score(self):
-        """Add score"""
-        score = self.score.get()
-        self.score.set(score+1)
-        self.score_txt.set(f"Score: {self.score.get()}")
-   
-    def reset_score(self):
-        self.score.set(0)
-        self.score_txt.set(f"Score: {self.score.get()}")
 
     def startGame(self):
         """When Play Button clicked, starts the game"""
