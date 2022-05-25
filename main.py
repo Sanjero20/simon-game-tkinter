@@ -12,12 +12,16 @@ class GUI:
         self.init_Window()
         self.main_menu()
         self.window.mainloop()
-        
+
     def init_Window(self):
         """Initialize Windows"""
         self.window = Tk()
         self.window.title("SIMON Game")
         self.window.geometry("350x350")
+        self.window.resizable(False, False)
+
+        icon = PhotoImage(file="image\\icon.png")
+        self.window.iconphoto(True, icon)
         self.window.configure(bg=BACKGROUND)
         
         self.frame_Menu = Frame(self.window, background=BACKGROUND, width=300, height=300)
@@ -30,7 +34,7 @@ class GUI:
     def hide_widget(self, widget):
         """Hide Widget that uses the .pack() method"""
         widget.pack_forget()
-        
+
     def main_menu(self):
         self.show_widget(self.frame_Menu, x=0, y=20)
         self.button_START = Button(self.frame_Menu,
