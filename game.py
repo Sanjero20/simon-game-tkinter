@@ -1,4 +1,4 @@
-import os, random, time, pygame
+import os, random, time
 from tkinter import *
 
 from button_settings import ButtonSettings

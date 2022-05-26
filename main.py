@@ -1,6 +1,4 @@
 from tkinter import *
-import pygame
-
 from game import Game
 
 #Color codes
